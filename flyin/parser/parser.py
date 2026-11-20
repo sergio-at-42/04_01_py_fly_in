@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 import json
 
-from ..error import Error, DataTypeError, DataKeyError, DataValueError, DataError
+from flyin.error import Error, DataTypeError, DataKeyError, DataValueError, DataError
 
 
 class Parser():

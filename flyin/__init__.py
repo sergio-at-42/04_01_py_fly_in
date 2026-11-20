@@ -6,7 +6,9 @@ __all__ = ["Error",
            "DataKeyError",
            "DataValueError",
            "DataError",
-           "Parser"]
+           "Parser",
+           "Zone",
+           "Connection"]
 
 from .error import Error, \
     DataTypeError, \
@@ -15,3 +17,7 @@ from .error import Error, \
     DataError
 
 from .parser import Parser
+
+from .zone import Zone
+
+from .connection import Connection
