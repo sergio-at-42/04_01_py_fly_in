@@ -8,7 +8,7 @@ class Flyin():
         Error.log_application_started()
         Parser()
         Error.log_game_over()
-        print()
+        print(">>>>>>>>>>>> LOG FILE <<<<<<<<<<<<")
         print(Error.read_log())
 
 

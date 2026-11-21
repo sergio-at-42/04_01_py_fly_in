@@ -2,6 +2,9 @@ __version__ = "1.0.0"
 __author__ = "Serge"
 
 __all__ = ["Error",
+           "MapFileNotFoundError",
+           "NoMapFileProvideError",
+           "ParserError",
            "DataTypeError",
            "DataKeyError",
            "DataValueError",
@@ -9,9 +12,20 @@ __all__ = ["Error",
            "ParametersValueError",
            "NbDroneError",
            "HubTypeError",
+           "StartHubExistError",
+           "EndHubExistError",
+           "DashOrSpaceInZoneNameError",
+           "CoordMustBeIntegerError",
+           "ZoneExistError",
+           "ZoneTypeError",
+           "NotValidColorError",
+           "ZoneNotExistError",
            "SameZoneError"]
 
 from .error import Error, \
+    MapFileNotFoundError, \
+    NoMapFileProvideError, \
+    ParserError, \
     DataTypeError, \
     DataKeyError, \
     DataValueError, \
@@ -19,4 +33,12 @@ from .error import Error, \
     ParametersValueError, \
     NbDroneError, \
     HubTypeError, \
+    StartHubExistError, \
+    EndHubExistError, \
+    DashOrSpaceInZoneNameError, \
+    CoordMustBeIntegerError, \
+    ZoneExistError, \
+    ZoneTypeError, \
+    NotValidColorError, \
+    ZoneNotExistError, \
     SameZoneError

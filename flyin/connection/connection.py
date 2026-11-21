@@ -13,8 +13,6 @@ class Connection():
                 ) -> None:
         self.zone1: Zone = zone1
         self.zone2: Zone = zone2
+        self.name: str = f"{self.zone1.name}-{self.zone2.name}"
         self.meta: dict[str, int] = meta
         Connection.connections[(self.zone1.name, self.zone2.name)] = self
-
-    def name(self) -> str:
-        return (f"{self.zone1.name}-{self.zone2.name}")

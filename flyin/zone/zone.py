@@ -27,7 +27,9 @@ class Zone():
         self.meta: dict[str, Any] = meta
         match self.hub:
             case HubType.START:
+                self.meta["max_drones"] = -1
                 Zone.start_hub = self.name
             case HubType.END:
+                self.meta["max_drones"] = -1
                 Zone.end_hub = self.name
         Zone.hubs[self.name] = self

@@ -64,16 +64,38 @@ class Error(Exception):
 
     @classmethod
     def print_and_exit(cls) -> None:
+        msg: str = cls.log_msg
+        spc: str = " " * ((80 - len(msg)) // 2)
+        msg: str = spc + msg + spc
         danger: str = "   DANGER   DANGER   DANGER   DANGER   DANGER   DANGER   "
         panic: str = "              DON'T PANIC, IT'S JUST A BUG               "
         print(Color.NONE.ascii(), Color.BGRED.ascii(), Color.BLACK.ascii(), Color.DIMMED.ascii(), Color.BLINKING.ascii(), sep="", end="")
-        print(danger.rjust((len(cls.log_msg) + len(danger)) // 2).ljust(len(cls.log_msg)))
+        print(danger.rjust((len(msg) + len(danger)) // 2).ljust(len(msg)))
         print(Color.NONE.ascii(), Color.BGBLACK.ascii(), Color.RED.ascii(), sep="", end="")
-        print(cls.log_msg)
+        print(msg)
         print(Color.NONE.ascii(), Color.BGRED.ascii(), Color.BLACK.ascii(), Color.DIMMED.ascii(), Color.BLINKING.ascii(), sep="", end="")
-        print(panic.rjust((len(cls.log_msg) + len(panic)) // 2).ljust(len(cls.log_msg)))
+        print(panic.rjust((len(msg) + len(panic)) // 2).ljust(len(msg)))
         print(Color.NONE.ascii(), sep="", end="")
         exit(42)
+
+
+class NoMapFileProvideError(Error):
+    """Base class for map file related errors."""
+    def __init__(self) -> None:
+        super().__init__("[error]No map file provide.")
+
+
+class MapFileNotFoundError(Error):
+    """Base class for map file related errors."""
+    def __init__(self, map_file: str = "") -> None:
+        super().__init__(f"[error]Map file <{map_file}> not found.")
+
+
+class ParserError(Error):
+    """Base class for parser related errors."""
+    def __init__(self, num_line: int, e: Error) -> None:
+        super().__init__(f"Parser Error line {num_line} : {e}")
+
 
 class DataTypeError(Error):
     """Base class for type related errors."""
@@ -115,6 +137,61 @@ class HubTypeError(Error):
     def __init__(self, hub_type: str) -> None:
         super().__init__(f"[error]<{hub_type}> not a valid value "
                          f"for hub type.")
+
+
+class StartHubExistError(Error):
+    """Base class for start hub related errors."""
+    def __init__(self) -> None:
+        super().__init__("[error]Start Hub already exist "
+                         "and must be unique.")
+
+
+class EndHubExistError(Error):
+    """Base class for end hub related errors."""
+    def __init__(self) -> None:
+        super().__init__("[error]End Hub already exist "
+                         "and must be unique.")
+
+
+class DashOrSpaceInZoneNameError(Error):
+    """Base class for dashes or spaces in zone name related errors."""
+    def __init__(self, zone_name: str) -> None:
+        super().__init__("[error]invalid dashes or spaces"
+                         f" in zone name <{zone_name}>.")
+
+
+class CoordMustBeIntegerError(Error):
+    """Base class for coord related errors."""
+    def __init__(self) -> None:
+        super().__init__("[error]X and Y coordinates must be integers.")
+
+
+class ZoneExistError(Error):
+    """Base class for zone exist related errors."""
+    def __init__(self, zone_name: str) -> None:
+        super().__init__(f"[error]zone <{zone_name}> already exist "
+                         "and must be unique.")
+
+
+class ZoneTypeError(Error):
+    """Base class for zone type related errors."""
+    def __init__(self, zone_type: str) -> None:
+        super().__init__(f"[error]<{zone_type}> not a valid value "
+                         f"for zone type.")
+
+
+class NotValidColorError(Error):
+    """Base class for hub type related errors."""
+    def __init__(self, color: str) -> None:
+        super().__init__(f"[error]<{color}> not a valid value "
+                         f"for color.")
+
+
+class ZoneNotExistError(Error):
+    """Base class for zone in connection related errors."""
+    def __init__(self, zone_name: str) -> None:
+        super().__init__(f"[error]<{zone_name}> zone not exist "
+                         "for connection.")
 
 
 class SameZoneError(Error):
