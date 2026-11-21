@@ -7,6 +7,11 @@ PIP = $(VENV)/bin/pip
 # application
 APP = flyin.py
 
+# maps
+MAPS00 = maps/00_test_map.txt
+MAPS11 = maps/easy/01_linear_path.txt
+MAPS12 = maps/easy/02_simple_fork.txt
+
 # Execute the main script of Pac-Man with config.json.
 help :
 	@echo "make / make help : display this page."
@@ -22,7 +27,13 @@ $(VENV):
 
 # Execute the main script of Pac-Man with config.json.
 run :$(VENV)
-	@$(PYTHON) $(APP)
+	$(PYTHON) $(APP) $(MAPS00)
+
+run11 : $(VENV)
+	$(PYTHON) $(APP) $(MAPS11)
+
+run12 : $(VENV)
+	$(PYTHON) $(APP) $(MAPS12)
 
 # Install activity dependencies using pip, uv, pipx, or any other package manager of your choice.
 install : $(VENV)

@@ -5,10 +5,18 @@ __all__ = ["Error",
            "DataTypeError",
            "DataKeyError",
            "DataValueError",
-           "DataError"]
+           "DataError",
+           "ParametersValueError",
+           "NbDroneError",
+           "HubTypeError",
+           "SameZoneError"]
 
 from .error import Error, \
     DataTypeError, \
     DataKeyError, \
     DataValueError, \
-    DataError
+    DataError, \
+    ParametersValueError, \
+    NbDroneError, \
+    HubTypeError, \
+    SameZoneError

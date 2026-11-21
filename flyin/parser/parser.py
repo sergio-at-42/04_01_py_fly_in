@@ -6,7 +6,9 @@ import sys
 from pathlib import Path
 import json
 
-from flyin.error import Error, DataTypeError, DataKeyError, DataValueError, DataError
+from flyin.zone import Zone, ZoneType, HubType, Color
+from flyin.connection import Connection
+from flyin.error import Error, DataTypeError, DataKeyError, DataValueError, DataError, ParametersValueError, NbDroneError, SameZoneError
 
 
 class Parser():
@@ -33,16 +35,15 @@ class Parser():
     def read_file(cls) -> bool:
         if cls.file_from_argv():
             try:
-                with open(cls.data_file_name, "r") as json_file:
-                    data_json: str = ""
-                    line: str = ""
-                    line = json_file.readline()
+                with open(cls.data_file_name, "r") as data_file:
+                    num_line: int = 1
+                    line: str = data_file.readline()
                     while line:
-                        if not line.strip().startswith(("#", "//")):
-                            json += line
-                        line = json_file.readline()
-                    cls.data_dict = json.loads(data_json)
-                    cls.set_values(cls.data_dict)
+                        if not line.strip().startswith(("#", "//")) \
+                                and line != "\n":
+                            cls.set_values(num_line, line)
+                        line = data_file.readline()
+                        num_line += 1
             except FileNotFoundError:
                 Error("[error]No data file found.")
             except json.decoder.JSONDecodeError:
@@ -74,25 +75,81 @@ class Parser():
         return (cls.data_file_name != "")
 
     @classmethod
-    def set_values(cls) -> None:
-        value_set: bool = False
-        for data_key, data_value in cls.data_dict.items():
-            try:
-                if hasattr(cls, data_key):
-                    key_type: type = type(getattr(cls, data_key))
-                    if isinstance(data_value, key_type):
-                        if cls.verify_value(data_key, data_value):
-                            setattr(cls, data_key, data_value)
-                            value_set = True
-                        else:
-                            raise DataValueError(data_key, data_value)
+    def set_values(cls, num_line: int, line: str) -> None:
+        try:
+            data = line.split(":", maxsplit=1)
+            print(data)
+            if data[0] == "nb_drones":
+                cls.verify_drone(data[1])
+            elif data[0] in ["start_hub", "end_hub", "hub"]:
+                cls.verify_hub(data)
+            elif data[0] == "connection":
+                cls.verify_connection(data)
+            else:
+                raise ParametersValueError(data[0])
+            # if hasattr(cls, data_key):
+            #     key_type: type = type(getattr(cls, data_key))
+            #     if isinstance(data_value, key_type):
+            #         if cls.verify_value(data_key, data_value):
+            #             setattr(cls, data_key, data_value)
+            #             value_set = True
+            #         else:
+            #             raise DataValueError(data_key, data_value)
+            #     else:
+            #         raise DataTypeError(data_key, data_value, key_type)
+            # else:
+            #     raise DataKeyError(data_key)
+        except Error as e:
+            Error(f"Parser Error line {num_line} : {e}").print_and_exit()
+
+    @classmethod
+    def verify_drone(cls, nb_drones: str) -> None:
+        try:
+            Zone.nb_drones = int(nb_drones.strip())
+            if Zone.nb_drones < 1:
+                raise NbDroneError()
+        except ValueError:
+            raise NbDroneError()
+
+
+    @classmethod
+    def verify_hub(cls, data: list[str]) -> None:
+        try:
+            hub: HubType = HubType(data[0])
+            param: list[str] = data[1].split()
+            name: str = str(param[0])
+            xy: tuple[int, int] = (int(param[1]), int(param[2]))
+            meta: dict[str, Any] = {
+                "zone": ZoneType.NORMAL,
+                "color": Color.NONE,
+                "max_drones": 1}
+            if len(param) == 4:
+                for m in param[3].split():
+                    key, value = tuple(m.split("=", maxsplit=1))
+                    if key == "color":
+                        meta[key] = Color(value)
+                    elif key == "zone":
+                        meta[key] = ZoneType(value)
+                    elif key == "max_drones":
+                        meta[key] == int(value)
                     else:
-                        raise DataTypeError(data_key, data_value, key_type)
-                else:
-                    raise DataKeyError(data_key)
-            except Error:
-                pass
-        return (value_set)
+                        raise ParametersValueError
+            Zone(hub, name, xy, meta)
+        
+            print(HubType(data[0]))
+            print(data[1].split())
+        except :
+            pass
+
+
+    @classmethod
+    def verify_connection(cls, data: list[str]) -> None:
+        try:
+            print(data[1].split())
+        except:
+            pass
+
+
 
     @classmethod
     def verify_value(cls, key: str, value: Any) -> bool:
@@ -115,3 +172,7 @@ class Parser():
         except Error:
             value_ok = False
         return (value_ok)
+
+
+# 
+
