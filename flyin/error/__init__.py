@@ -8,7 +8,6 @@ __all__ = ["Error",
            "DataTypeError",
            "DataKeyError",
            "DataValueError",
-           "DataError",
            "ParametersValueError",
            "NbDroneError",
            "HubTypeError",
@@ -20,7 +19,8 @@ __all__ = ["Error",
            "ZoneTypeError",
            "NotValidColorError",
            "ZoneNotExistError",
-           "SameZoneError"]
+           "SameZoneError",
+           "ConnectionExistError"]
 
 from .error import Error, \
     MapFileNotFoundError, \
@@ -29,7 +29,6 @@ from .error import Error, \
     DataTypeError, \
     DataKeyError, \
     DataValueError, \
-    DataError, \
     ParametersValueError, \
     NbDroneError, \
     HubTypeError, \
@@ -41,4 +40,5 @@ from .error import Error, \
     ZoneTypeError, \
     NotValidColorError, \
     ZoneNotExistError, \
-    SameZoneError
+    SameZoneError, \
+    ConnectionExistError

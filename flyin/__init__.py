@@ -1,14 +1,19 @@
 __version__ = "1.0.0"
 __author__ = "Serge"
 
-__all__ = ["Error",
+__all__ = ["Navigation",
+           "Drone",
+           "Zone",
+           "Connection",
+           "Link",
+           "Parser",
+           "Error",
            "MapFileNotFoundError",
            "NoMapFileProvideError",
            "ParserError",
            "DataTypeError",
            "DataKeyError",
            "DataValueError",
-           "DataError",
            "ParametersValueError",
            "NbDroneError",
            "HubTypeError",
@@ -21,9 +26,19 @@ __all__ = ["Error",
            "NotValidColorError",
            "ZoneNotExistError",
            "SameZoneError",
-           "Parser",
-           "Zone",
-           "Connection"]
+           "ConnectionExistError"]
+
+from .navigation import Navigation
+
+from .drone import Drone
+
+from .zone import Zone
+
+from .connection import Connection
+
+from .link import Link
+
+from .parser import Parser
 
 from .error import Error, \
     MapFileNotFoundError, \
@@ -32,7 +47,6 @@ from .error import Error, \
     DataTypeError, \
     DataKeyError, \
     DataValueError, \
-    DataError, \
     ParametersValueError, \
     NbDroneError, \
     HubTypeError, \
@@ -44,10 +58,5 @@ from .error import Error, \
     ZoneTypeError, \
     NotValidColorError, \
     ZoneNotExistError, \
-    SameZoneError
-
-from .parser import Parser
-
-from .zone import Zone
-
-from .connection import Connection
+    SameZoneError, \
+    ConnectionExistError

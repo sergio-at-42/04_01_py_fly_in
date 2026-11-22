@@ -28,6 +28,7 @@ $(VENV):
 # Execute the main script of Pac-Man with config.json.
 run :$(VENV)
 	$(PYTHON) $(APP) $(MAPS00)
+	make clean
 
 run11 : $(VENV)
 	$(PYTHON) $(APP) $(MAPS11)

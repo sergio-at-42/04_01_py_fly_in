@@ -201,7 +201,8 @@ class SameZoneError(Error):
                          "for a connection.")
 
 
-class DataError(Error):
-    """Base class for any related errors."""
+class ConnectionExistError(Error):
+    """Base class for start hub related errors."""
     def __init__(self) -> None:
-        super().__init__("[error]Class to create any errors.")
+        super().__init__("[error]Connection already exist "
+                         "and must be unique.")

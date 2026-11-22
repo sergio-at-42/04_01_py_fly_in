@@ -7,29 +7,33 @@ from .color import Color
 
 class Zone():
 
-    start_hub: str = ""
-    end_hub: str = ""
+    start_hub: Zone = None
+    end_hub: Zone = None
     hubs: dict[str, Zone] = {}
-    nb_drones: int = 1
 
     def __init__(self,
                  hub: HubType,
                  name: str,
                  xy: tuple[int, int] = (0, 0),
-                 meta: dict[str, Any] = {
-                    "zone": ZoneType.NORMAL,
-                    "color": Color.NONE,
-                    "max_drones": 1}
+                zone_type: ZoneType = ZoneType.NORMAL,
+                color: Color = Color.NONE,
+                max_drones: int = 1
                 ) -> None:
+        from flyin.drone import Drone
+        from flyin.link import Link
         self.hub: HubType = hub
         self.name: str = name
         self.xy: tuple[int, int] = xy
-        self.meta: dict[str, Any] = meta
+        self.zone_type: ZoneType = zone_type
+        self.color: Color = color
+        self.max_drones: int = max_drones
         match self.hub:
             case HubType.START:
-                self.meta["max_drones"] = -1
-                Zone.start_hub = self.name
+                self.max_drones = -1
+                Zone.start_hub = self
             case HubType.END:
-                self.meta["max_drones"] = -1
-                Zone.end_hub = self.name
+                self.max_drones = -1
+                Zone.end_hub = self
+        self.connect: list[Link] = []
+        self.drones: list[Drone] = []
         Zone.hubs[self.name] = self

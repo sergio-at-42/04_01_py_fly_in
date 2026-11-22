@@ -1,18 +1,17 @@
-#!/usr/bin/env python3
-
 from __future__ import annotations
 from typing import Any
 import sys
 from pathlib import Path
-import json
 
+from flyin.drone import Drone
 from flyin.zone import Zone, ZoneType, HubType, Color
 from flyin.connection import Connection
 from flyin.error import Error, MapFileNotFoundError, NoMapFileProvideError, \
-    DataTypeError, DataKeyError, DataValueError, DataError, \
+    DataTypeError, DataKeyError, DataValueError, \
     ParserError, ParametersValueError, NbDroneError, StartHubExistError, EndHubExistError, \
     DashOrSpaceInZoneNameError, CoordMustBeIntegerError, ZoneExistError, \
-    ZoneTypeError, NotValidColorError, ZoneNotExistError, SameZoneError
+    ZoneTypeError, NotValidColorError, \
+    ZoneNotExistError, SameZoneError, ConnectionExistError
 
 
 class Parser():
@@ -39,7 +38,6 @@ class Parser():
 
     @classmethod
     def read_file(cls) -> None:
-        # cls.file_from_argv()
         try:
             with open(sys.argv[1], "r") as map_file:
                 num_line: int = 1
@@ -63,8 +61,8 @@ class Parser():
     @classmethod
     def verify_drone(cls, data: list[str]) -> None:
         try:
-            Zone.nb_drones = int(data[1].strip())
-            if Zone.nb_drones < 1:
+            Drone.nb_drones = int(data[1].strip())
+            if Drone.nb_drones < 1:
                 raise NbDroneError()
         except ValueError:
             raise NbDroneError()
@@ -72,9 +70,9 @@ class Parser():
     @classmethod
     def verify_hub(cls, data: list[str]) -> None:
         hub: HubType = HubType(data[0])
-        if hub is HubType.START and Zone.start_hub != "":
-            raise StartHubExistError()
-        if hub is HubType.END and Zone.end_hub != "":
+        if hub is HubType.START and Zone.start_hub is not None:
+                raise StartHubExistError()
+        if hub is HubType.END and Zone.end_hub is not None:
             raise EndHubExistError()
         param: list[str] = data[1].split()
         name: str = str(param[0])
@@ -86,34 +84,35 @@ class Parser():
             xy: tuple[int, int] = (int(param[1]), int(param[2]))
         except ValueError:
             raise CoordMustBeIntegerError()
-        meta: dict[str, Any] = {
-            "zone": ZoneType.NORMAL,
-            "color": Color.NONE,
-            "max_drones": 1}
+        zone_type: ZoneType = ZoneType.NORMAL
+        color: Color = Color.NONE
+        max_drones: int = 1
         if len(param) > 3:
             for m in param[3:]:
                 key, value = tuple(m.strip("[]").split("=", maxsplit=1))
                 if key == "zone":
                     try:
-                        meta[key] = ZoneType(value)
+                        zone_type = ZoneType(value)
                     except:
                         raise ZoneTypeError(value)
                 elif key == "color":
                     try:
-                        meta[key] = Color(value)
+                        color = Color(value)
                     except ValueError:
                         raise NotValidColorError(value)
                 elif key == "max_drones":
                     if hub not in [HubType.START, HubType.END]:
                         try:
-                            meta[key] = int(value)
-                            if meta[key] < 1:
+                            max_drones = int(value)
+                            if max_drones < 1:
                                 raise NbDroneError()
                         except ValueError:
                             raise NbDroneError()
                 else:
                     raise ParametersValueError(key)
-        Zone(hub, name, xy, meta)
+        Zone(hub, name, xy, zone_type, color, max_drones)
+        if hub is HubType.START:
+            Drone.reset()
 
     @classmethod
     def verify_connection(cls, data: list[str]) -> None:
@@ -129,6 +128,8 @@ class Parser():
             zone2: Zone = Zone.hubs[z2]
         except KeyError:
             raise ZoneNotExistError(z2)
+        if (z1, z2) in Connection.network or (z2, z1) in Connection.network:
+            raise ConnectionExistError()
         meta: dict[str, int] = {"max_link_capacity": 1}
         if len(param) > 1:
             for p in param[1:]:
@@ -142,4 +143,4 @@ class Parser():
                         raise NbDroneError()
                 else:
                     raise ParametersValueError(key)
-        Connection(zone1, zone2, meta)
+        Connection.add(zone1, zone2, meta)

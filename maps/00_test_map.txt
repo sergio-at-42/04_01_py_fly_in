@@ -13,6 +13,8 @@ connection: junction-path_b
 connection: path_a-goal
 connection: path_b-goal
 
+
+#connection: goal-path_b
 #start_hub: start 0 0 [color=green]
 #end_hub: goal 3 0
 #hub: path_a 2 1 [color=blue]
