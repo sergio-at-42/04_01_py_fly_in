@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Any
 from .zone_type import ZoneType
 from .hub_type import HubType
 from .color import Color
@@ -8,7 +7,7 @@ from .color import Color
 class Zone():
 
     start_hub: Zone | None = None
-    end_hub: Zone  | None = None
+    end_hub: Zone | None = None
     hubs: dict[str, Zone] = {}
 
     def __init__(self,

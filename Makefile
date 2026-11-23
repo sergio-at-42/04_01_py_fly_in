@@ -12,6 +12,10 @@ MAPS00 = maps/00_test_map.txt
 MAPS11 = maps/easy/01_linear_path.txt
 MAPS12 = maps/easy/02_simple_fork.txt
 MAPS13 = maps/easy/03_basic_capacity.txt
+MAPS21 = maps/medium/01_dead_end_trap.txt
+MAPS22 = maps/medium/02_circular_loop.txt
+MAPS23 = maps/medium/03_priority_puzzle.txt
+
 
 # Execute the main script of Pac-Man with config.json.
 help :
@@ -32,13 +36,24 @@ run :$(VENV)
 	make clean
 
 run11 : $(VENV)
+	clear
 	$(PYTHON) $(APP) $(MAPS11)
-
 run12 : $(VENV)
+	clear
 	$(PYTHON) $(APP) $(MAPS12)
-
 run13 : $(VENV)
+	clear
 	$(PYTHON) $(APP) $(MAPS13)
+run21 : $(VENV)
+	clear
+	$(PYTHON) $(APP) $(MAPS21)
+run22 : $(VENV)
+	clear
+	$(PYTHON) $(APP) $(MAPS22)
+run23 : $(VENV)
+	clear
+	$(PYTHON) $(APP) $(MAPS23)
+
 
 # Install activity dependencies using pip, uv, pipx, or any other package manager of your choice.
 install : $(VENV)

@@ -25,32 +25,45 @@ class Navigation():
     def next_turn(cls) -> None:
         cls.nb_turn += 1
         for d in Drone.fleet:
-            d.move(cls.path_finding(d).to)
+            if d.pos != Zone.end_hub:
+                d.move(cls.path_finding(d).to)
         cls.display_drones_positions()
 
     @classmethod
     def path_finding(cls, drone: Drone, target: Zone | None = None) -> Link:
         if target is None:
             target = Zone.end_hub
-        pos: Zone = drone.pos
+        pos: Zone = drone.pos # type: ignore
         search_zone: Zone = pos
         next_link: Link = Link(pos, Connection(pos, pos))
         search_path: list[tuple[Zone, Link]] = []
-        zones_visited: list[Zone] = []
+
+        # search_link: Link = Link(pos, Connection(pos, pos))
+        # search_path: list[tuple[Link, Link]] = []
+
+        zones_visited: list[Zone] = drone.histo_visited.copy()
 
         for l in pos.connect:
             if len(l.to.drones) < l.to.max_drones:
                 search_path.append((pos, l))
             elif l.to == target:
-                search_path.append((pos, l))
+                # search_path.append((pos, l))
+                search_zone = target # type: ignore
+                next_link = l
+
+
+        # next_link: Link = l # type: ignore
 
         while len(search_path) > 0 and search_zone != target:
             search_zone, next_link = search_path.pop()
+            print(search_zone.name, next_link.to.name, " | ", end=" ") ############################################
             if search_zone != target:
                 if search_zone not in zones_visited:
                     zones_visited.append(search_zone)
                     for l in search_zone.connect:
                         search_path.append((l.to, next_link))
+        
+        print(drone.id) ##########################################3333
         return (next_link)
 
     @classmethod
@@ -60,8 +73,8 @@ class Navigation():
         else:
             for d in Drone.fleet:
                 print(f"{d.id}-", end="")
-                print(d.pos.color.ascii(), end="")
-                print(f"{d.pos.name}", end="")
+                print(d.pos.color.ascii(), end="") # type: ignore
+                print(f"{d.pos.name}", end="") # type: ignore
                 print(Color.NONE.ascii(), end=" ")
             print()
 
