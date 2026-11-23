@@ -7,8 +7,8 @@ from .color import Color
 
 class Zone():
 
-    start_hub: Zone = None
-    end_hub: Zone = None
+    start_hub: Zone | None = None
+    end_hub: Zone  | None = None
     hubs: dict[str, Zone] = {}
 
     def __init__(self,

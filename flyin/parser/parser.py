@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, Callable
 import sys
 from pathlib import Path
 
@@ -17,7 +17,7 @@ from flyin.error import Error, MapFileNotFoundError, NoMapFileProvideError, \
 class Parser():
 
     data_directory: str = "data/"
-    verify_func: dict[str, callable] = {}
+    verify_func: dict[str, Callable] = {}
 
     def __init__(self) -> None:
         cls = type(self)
@@ -38,9 +38,10 @@ class Parser():
 
     @classmethod
     def read_file(cls) -> None:
+        data: list[str] = []
+        num_line: int = 1
         try:
             with open(sys.argv[1], "r") as map_file:
-                num_line: int = 1
                 line: str = map_file.readline()
                 while line:
                     if not line.strip().startswith(("#", "//")) \

@@ -8,7 +8,7 @@ class Drone():
     nb_id: int = 0
     fleet: list[Drone] = []
 
-    def __init__(self, pos: Zone = None) -> None:
+    def __init__(self, pos: Zone | None = None) -> None:
         Drone.nb_id += 1
         self.id: str = f"D{Drone.nb_id}"
         self.pos: Zone = pos
