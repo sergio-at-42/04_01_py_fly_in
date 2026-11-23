@@ -14,6 +14,7 @@ class Color(Enum):
     MAGENTA = "magenta"
     CYAN = "cyan"
     WHITE = "white"
+    ORANGE = "orange"
     # Background colors
     BGBLACK = "bgblack"
     BGRED = "bgred"
@@ -23,6 +24,7 @@ class Color(Enum):
     BGMAGENTA = "bgmagenta"
     BGCYAN = "bgcyan"
     BGWHITE = "bgwhite"
+    BGORANGE = "orange"
 
     # Style
     BOLD = "bold"
@@ -40,39 +42,43 @@ class Color(Enum):
         ascii_value: str = "\033[0m"
         match self.value:
             case "none":
-                ascii_value = "\033[0m"           # Reset
+                ascii_value = "\033[0m"         # Reset
             case "black":
-                ascii_value = "\033[30m"          # Black
+                ascii_value = "\033[30m"        # Black
             case "red":
-                ascii_value = "\033[31m"            # Red
+                ascii_value = "\033[31m"        # Red
             case "green":
-                ascii_value = "\033[32m"          # Green
+                ascii_value = "\033[32m"        # Green
             case "yellow":
-                ascii_value = "\033[33m"         # Yellow
+                ascii_value = "\033[33m"        # Yellow
             case "blue":
-                ascii_value = "\033[34m"           # Blue
+                ascii_value = "\033[34m"        # Blue
             case "magenta":
                 ascii_value = "\033[35m"        # Magenta
             case "cyan":
-                ascii_value = "\033[36m"           # Cyan
+                ascii_value = "\033[36m"        # Cyan
             case "white":
-                ascii_value = "\033[37m"          # White
+                ascii_value = "\033[37m"        # White
+            case "orange":
+                ascii_value = "\033[38;5;208m"  # Orange
             case "bgblack":
-                ascii_value = "\033[40m"       # Black
+                ascii_value = "\033[40m"        # Black
             case "bgred":
-                ascii_value = "\033[41m"         # Red
+                ascii_value = "\033[41m"        # Red
             case "bggreen":
-                ascii_value = "\033[42m"       # Green
+                ascii_value = "\033[42m"        # Green
             case "bgyellow":
-                ascii_value = "\033[43m"      # Yellow
+                ascii_value = "\033[43m"        # Yellow
             case "bgblue":
                 ascii_value = "\033[44m"        # Blue
             case "bgmagenta":
-                ascii_value = "\033[45m"     # Magenta
+                ascii_value = "\033[45m"        # Magenta
             case "bgcyan":
                 ascii_value = "\033[46m"        # Cyan
             case "bgwhite":
-                ascii_value = "\033[47m"       # White
+                ascii_value = "\033[47m"        # White
+            case "bgorange":
+                ascii_value = "\033[48;5;208m"  # Orange
             case "bold":
                 ascii_value = "\033[1m"	        # Bold
             case "dimmed":
@@ -80,15 +86,15 @@ class Color(Enum):
             case "italic":
                 ascii_value = "\033[3m"	        # Italic
             case "underline":
-                ascii_value = "\033[4m"       # Underlined
+                ascii_value = "\033[4m"         # Underlined
             case "blinking":
-                ascii_value = "\033[5m"        # Blinking
+                ascii_value = "\033[5m"         # Blinking
             case "inversion":
-                ascii_value = "\033[7m"       # Foreground/background inversion
+                ascii_value = "\033[7m"         # Foreground/background inversion
             case "cursoroff":
-                ascii_value = "\033[?25l"    # Cusor OFF
+                ascii_value = "\033[?25l"       # Cusor OFF
             case "cursoron":
-                ascii_value = "\033[?25h"     # Cursor ON
+                ascii_value = "\033[?25h"       # Cursor ON
         return (ascii_value)
 
     def print(self) -> None:

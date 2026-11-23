@@ -11,6 +11,7 @@ APP = flyin.py
 MAPS00 = maps/00_test_map.txt
 MAPS11 = maps/easy/01_linear_path.txt
 MAPS12 = maps/easy/02_simple_fork.txt
+MAPS13 = maps/easy/03_basic_capacity.txt
 
 # Execute the main script of Pac-Man with config.json.
 help :
@@ -35,6 +36,9 @@ run11 : $(VENV)
 
 run12 : $(VENV)
 	$(PYTHON) $(APP) $(MAPS12)
+
+run13 : $(VENV)
+	$(PYTHON) $(APP) $(MAPS13)
 
 # Install activity dependencies using pip, uv, pipx, or any other package manager of your choice.
 install : $(VENV)
