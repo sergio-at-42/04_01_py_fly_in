@@ -34,31 +34,35 @@ class Navigation():
         if target is None:
             target = Zone.end_hub
         # pos: Zone = drone.pos 
-        search_zone: Zone = drone.pos # type: ignore
-        next_link: Link = Link(pos, Connection(pos, pos))
-        search_path: list[tuple[Zone, Link]] = []
+        search_zones: set[Zone] = set()
+        next_zone: Zone = drone.pos # type: ignore
+        next_path: Zone = drone.pos # type: ignore
+        # next_link: Link = Link(pos, Connection(pos, pos))
+        # search_path: list[tuple[Zone, Link]] = []
 
         # search_link: Link = Link(pos, Connection(pos, pos))
         # search_path: list[tuple[Link, Link]] = []
 
-        zones_visited: set[Zone] = drone.histo_visited.copy()
+        visited_zones: set[Zone] = drone.histo_visited.copy()
 
-        for l in pos.connect:
-            if l.to == target:
-                search_zone = target # type: ignore
-                next_link = l
-            elif l.to not in zones_visited and len(l.to.drones) < l.to.max_drones:
-                search_path.append((pos, l))
+        for z in drone.pos.connect: # type: ignore
+            if z.to == target:
+                next_zone = z.to
+            elif z.to not in visited_zones and len(z.to.drones) < z.to.max_drones:
+                search_zones.add(z.to)
 
 
         # next_link: Link = l # type: ignore
 
-        while len(search_path) > 0 and search_zone != target:
+        while len(search_zones) > 0 and next_zone != target:
             print("visited ==> ", [z.name for z in zones_visited]) ###################################
             print([(z.name, l.to.name) for z, l in search_path]) #########################################
-            search_zone, next_link = search_path.pop()
+
+            z = search_zones.pop()
+
             print(search_zone.name, next_link.to.name, " | ") ############################################
-            if search_zone != target:
+
+            if z != target:
                 if search_zone not in zones_visited and len(search_zone.drones) < search_zone.max_drones:
                     zones_visited.add(search_zone)
                     for l in search_zone.connect:
