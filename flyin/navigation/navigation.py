@@ -33,37 +33,42 @@ class Navigation():
     def path_finding(cls, drone: Drone, target: Zone | None = None) -> Link:
         if target is None:
             target = Zone.end_hub
-        pos: Zone = drone.pos # type: ignore
-        search_zone: Zone = pos
+        # pos: Zone = drone.pos 
+        search_zone: Zone = drone.pos # type: ignore
         next_link: Link = Link(pos, Connection(pos, pos))
         search_path: list[tuple[Zone, Link]] = []
 
         # search_link: Link = Link(pos, Connection(pos, pos))
         # search_path: list[tuple[Link, Link]] = []
 
-        zones_visited: list[Zone] = drone.histo_visited.copy()
+        zones_visited: set[Zone] = drone.histo_visited.copy()
 
         for l in pos.connect:
-            if len(l.to.drones) < l.to.max_drones:
-                search_path.append((pos, l))
-            elif l.to == target:
-                # search_path.append((pos, l))
+            if l.to == target:
                 search_zone = target # type: ignore
                 next_link = l
+            elif l.to not in zones_visited and len(l.to.drones) < l.to.max_drones:
+                search_path.append((pos, l))
 
 
         # next_link: Link = l # type: ignore
 
         while len(search_path) > 0 and search_zone != target:
+            print("visited ==> ", [z.name for z in zones_visited]) ###################################
+            print([(z.name, l.to.name) for z, l in search_path]) #########################################
             search_zone, next_link = search_path.pop()
-            print(search_zone.name, next_link.to.name, " | ", end=" ") ############################################
+            print(search_zone.name, next_link.to.name, " | ") ############################################
             if search_zone != target:
-                if search_zone not in zones_visited:
-                    zones_visited.append(search_zone)
+                if search_zone not in zones_visited and len(search_zone.drones) < search_zone.max_drones:
+                    zones_visited.add(search_zone)
                     for l in search_zone.connect:
                         search_path.append((l.to, next_link))
         
         print(drone.id) ##########################################3333
+        # if search_zone != target:
+        #     next_link = Link(pos, Connection(pos, pos))
+        if next_link.to.name == "dead_end":
+            exit(24)
         return (next_link)
 
     @classmethod
@@ -97,3 +102,50 @@ class Navigation():
         # print(empty_line)
         print(best.rjust((len(msg) + len(best)) // 2).ljust(len(msg)))
         print(Color.NONE.ascii(), sep="", end="")
+
+
+
+
+
+
+    # @classmethod
+    # def path_finding(cls, drone: Drone, target: Zone | None = None) -> Link:
+    #     if target is None:
+    #         target = Zone.end_hub
+    #     pos: Zone = drone.pos # type: ignore
+    #     search_zone: Zone = pos
+    #     next_link: Link = Link(pos, Connection(pos, pos))
+    #     search_path: list[tuple[Zone, Link]] = []
+
+    #     # search_link: Link = Link(pos, Connection(pos, pos))
+    #     # search_path: list[tuple[Link, Link]] = []
+
+    #     zones_visited: set[Zone] = drone.histo_visited.copy()
+
+    #     for l in pos.connect:
+    #         if l.to == target:
+    #             search_zone = target # type: ignore
+    #             next_link = l
+    #         elif l.to not in zones_visited and len(l.to.drones) < l.to.max_drones:
+    #             search_path.append((pos, l))
+
+
+    #     # next_link: Link = l # type: ignore
+
+    #     while len(search_path) > 0 and search_zone != target:
+    #         print("visited ==> ", [z.name for z in zones_visited]) ###################################
+    #         print([(z.name, l.to.name) for z, l in search_path]) #########################################
+    #         search_zone, next_link = search_path.pop()
+    #         print(search_zone.name, next_link.to.name, " | ") ############################################
+    #         if search_zone != target:
+    #             if search_zone not in zones_visited and len(search_zone.drones) < search_zone.max_drones:
+    #                 zones_visited.add(search_zone)
+    #                 for l in search_zone.connect:
+    #                     search_path.append((l.to, next_link))
+        
+    #     print(drone.id) ##########################################3333
+    #     # if search_zone != target:
+    #     #     next_link = Link(pos, Connection(pos, pos))
+    #     if next_link.to.name == "dead_end":
+    #         exit(24)
+    #     return (next_link)

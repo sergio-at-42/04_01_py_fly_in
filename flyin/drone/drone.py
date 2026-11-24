@@ -15,7 +15,7 @@ class Drone():
         if self.pos is None:
             self.pos = Zone.start_hub
         self.prev_pos: Zone | None = self.pos
-        self.histo_visited: list[Zone] = []
+        self.histo_visited: set[Zone] = {self.pos} # type: ignore
         self.pos.drones.append(self) # type: ignore
         Drone.fleet.append(self)
 
@@ -30,6 +30,6 @@ class Drone():
     def move(self, pos: Zone) -> None:
         self.pos.drones.remove(self) # type: ignore
         self.prev_pos = self.pos
-        self.histo_visited.append(self.pos) # type: ignore
         self.pos = pos
+        self.histo_visited.add(self.pos) # type: ignore
         self.pos.drones.append(self)
