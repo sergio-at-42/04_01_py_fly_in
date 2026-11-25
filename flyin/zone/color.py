@@ -15,6 +15,15 @@ class Color(Enum):
     CYAN = "cyan"
     WHITE = "white"
     ORANGE = "orange"
+    PURPLE = "purple"
+    BROWN = "brown"
+    LIME = "lime"
+    GOLD = "gold"
+    MAROON = "maroon"
+    DARKRED = "darkred"
+    VIOLET = "violet"
+    CRIMSON = "crimson"
+    RAINBOW = "rainbow"
     # Background colors
     BGBLACK = "bgblack"
     BGRED = "bgred"
@@ -24,7 +33,16 @@ class Color(Enum):
     BGMAGENTA = "bgmagenta"
     BGCYAN = "bgcyan"
     BGWHITE = "bgwhite"
-    BGORANGE = "orange"
+    BGORANGE = "bgorange"
+    BGPURPLE = "bgpurple"
+    BGBROWN = "bgbrown"
+    BGLIME = "bglime"
+    BGGOLD = "bggold"
+    BGMAROON = "bgmaroon"
+    BGDARKRED = "bgdarkred"
+    BGVIOLET = "bgviolet"
+    BGCRIMSON = "bgcrimson"
+    BGRAINBOW = "bgrainbow"
 
     # Style
     BOLD = "bold"
@@ -61,6 +79,24 @@ class Color(Enum):
                 ascii_value = "\033[37m"        # White
             case "orange":
                 ascii_value = "\033[38;5;208m"  # Orange
+            case "purple":
+                ascii_value = "\033[38;5;5m"    # Purple
+            case "brown":
+                ascii_value = "\033[38;5;94m"   # Brown
+            case "lime":
+                ascii_value = "\033[38;5;10m"   # Lime
+            case "gold":
+                ascii_value = "\033[38;5;220m"  # Gold
+            case "maroon":
+                ascii_value = "\033[38;5;1m"    # Maroon
+            case "darkred":
+                ascii_value = "\033[38;5;88m"   # Darkred
+            case "violet":
+                ascii_value = "\033[38;5;129m"  # Violet
+            case "crimson":
+                ascii_value = "\033[38;5;161m"  # Crimson
+            case "rainbow":
+                ascii_value = "\033[38;5;128m"  # Rainbow
             case "bgblack":
                 ascii_value = "\033[40m"        # Black
             case "bgred":
@@ -79,6 +115,24 @@ class Color(Enum):
                 ascii_value = "\033[47m"        # White
             case "bgorange":
                 ascii_value = "\033[48;5;208m"  # Orange
+            case "bgpurple":
+                ascii_value = "\033[48;5;5m"    # Purple
+            case "bgbrown":
+                ascii_value = "\033[48;5;94m"   # Brown
+            case "bglime":
+                ascii_value = "\033[48;5;10m"   # Lime
+            case "bggold":
+                ascii_value = "\033[48;5;220m"  # Gold
+            case "bgmaroon":
+                ascii_value = "\033[48;5;1m"    # Maroon
+            case "bgdarkred":
+                ascii_value = "\033[48;5;88m"   # Darkred
+            case "bgviolet":
+                ascii_value = "\033[48;5;129m"  # Violet
+            case "bgcrimson":
+                ascii_value = "\033[48;5;161m"  # Crimson
+            case "bgrainbow":
+                ascii_value = "\033[48;5;128m"  # Rainbow
             case "bold":
                 ascii_value = "\033[1m"	        # Bold
             case "dimmed":

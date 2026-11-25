@@ -9,8 +9,6 @@ class Flyin():
         Parser()
         Navigation()
         Error.log_game_over()
-        print(">>>>>>>>>>>> LOG FILE <<<<<<<<<<<<")
-        print(Error.read_log())
 
 
 if __name__ == "__main__":
