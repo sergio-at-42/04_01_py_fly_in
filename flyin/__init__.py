@@ -7,6 +7,7 @@ __all__ = ["Navigation",
            "Connection",
            "Link",
            "Parser",
+           "DisplayTerm",
            "Error",
            "MapFileNotFoundError",
            "NoMapFileProvideError",
@@ -39,6 +40,8 @@ from .connection import Connection
 from .link import Link
 
 from .parser import Parser
+
+from .display_term import DisplayTerm
 
 from .error import Error, \
     MapFileNotFoundError, \
