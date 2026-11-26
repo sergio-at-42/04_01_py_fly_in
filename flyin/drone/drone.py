@@ -28,6 +28,9 @@ class Drone():
                 Drone()
 
     def move(self, pos: Zone) -> None:
+        for link in self.pos.connect: # type: ignore
+            if link.to == pos:
+                link.by.drones.add(self) 
         self.pos.drones.remove(self) # type: ignore
         self.prev_pos = self.pos
         self.pos = pos

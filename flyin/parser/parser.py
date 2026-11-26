@@ -130,17 +130,21 @@ class Parser():
             raise ZoneNotExistError(z2)
         if (z1, z2) in Connection.network or (z2, z1) in Connection.network:
             raise ConnectionExistError()
-        meta: dict[str, int] = {"max_link_capacity": 1}
+        max_link_capacity: int = 1
+        # meta: dict[str, int] = {"max_link_capacity": 1}
         if len(param) > 1:
             for p in param[1:]:
                 key, value = tuple(p.strip("[]").split("=", maxsplit=1))
                 if key == "max_link_capacity":
                     try:
-                        meta[key] = int(value)
-                        if meta[key] < 1:
+                        max_link_capacity = int(value)
+                        if max_link_capacity < 1:
                             raise NbDroneError()
+                        # meta[key] = int(value)
+                        # if meta[key] < 1:
+                        #     raise NbDroneError()
                     except ValueError:
                         raise NbDroneError()
                 else:
                     raise ParametersValueError(key)
-        Connection.add(zone1, zone2, meta)
+        Connection.add(zone1, zone2, max_link_capacity)

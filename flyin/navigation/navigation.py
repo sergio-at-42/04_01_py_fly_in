@@ -29,6 +29,8 @@ class Navigation():
         cls.nb_turn += 1
         fleet_to_move: list[Drone] = Drone.fleet.copy()
         nb_drones_previous_move: int = len(fleet_to_move) + 42
+        for c in Connection.network.values():
+            c.drones.clear()
         while len(fleet_to_move) < nb_drones_previous_move:
             nb_drones_previous_move = len(fleet_to_move)
             for d in fleet_to_move:
@@ -54,11 +56,12 @@ class Navigation():
         # print("visited", [z.name for z in visited_zones]) ##############################################################3
 
         for z in drone.pos.connect: # type: ignore
-            if z.to == target:
-                next_zone = z.to
-                next_path = z.to
-            elif z.to not in visited_zones and len(z.to.drones) < z.to.max_drones:
-                search_zones.add((z.to, z.to))
+            if len(z.by.drones) < z.by.max_link_capacity:
+                if z.to == target:
+                    next_zone = z.to
+                    next_path = z.to
+                elif z.to not in visited_zones and len(z.to.drones) < z.to.max_drones:
+                    search_zones.add((z.to, z.to))
 
 
         while len(search_zones) > 0 and next_zone != target:
@@ -109,6 +112,7 @@ class Navigation():
         # print(empty_line)
         print(best.rjust((len(msg) + len(best)) // 2).ljust(len(msg)))
         print(Color.NONE.ascii(), sep="", end="")
+        print()
 
 
 
